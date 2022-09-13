@@ -5,10 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="823b2ac5-61f6-4808-9191-e5200d643526" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/jade.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/DeliveryAgent.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/MasterRoutingAgent.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -44,6 +40,7 @@
     "project.structure.last.edited": "Libraries",
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.2",
+    "run.code.analysis.last.selected.profile": "pProject Default",
     "settings.editor.selected.configurable": "editor.preferences.tabs"
   }
 }]]></component>
@@ -57,7 +54,7 @@
     <configuration name="Boot" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="jade.Boot" />
       <module name="DVRS App" />
-      <option name="PROGRAM_PARAMETERS" value="-gui -agents MRA:MasterRoutingAgent" />
+      <option name="PROGRAM_PARAMETERS" value="-gui -agents MRA:MasterRoutingAgent DA:DeliveryAgent" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
