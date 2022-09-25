@@ -3,34 +3,28 @@ import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 
+import java.util.ArrayList;
+import java.util.List;
 
-public class DeliveryAgent extends Agent{
-    private final MessageTemplate template = MessageTemplate.and(
-            MessageTemplate.MatchPerformative(ACLMessage.QUERY_IF),
-            MessageTemplate.MatchOntology("presence"));
+
+public class DeliveryAgent extends Agent {
+    private int maxCapacity;
+
 
     protected void setup() {
-        System.out.println("Master Routing Agent " + getAID().getName() + " is ready for duty!");
-
         addBehaviour(new CyclicBehaviour(this) {
+            @Override
             public void action() {
-                ACLMessage message = myAgent.receive(template);
+                ACLMessage message = receive();
 
-                if(message != null){
+                if (message != null) {
                     System.out.println("Received message from " + message.getSender().getName());
-                    ACLMessage reply = message.createReply();
-                    if("alive".equals(message.getContent())){
-                        reply.setPerformative(ACLMessage.INFORM);
-                        reply.setContent("alive");
-                    }else{
-                        reply.setPerformative(ACLMessage.NOT_UNDERSTOOD);
-                        reply.setContent("Unknown-content");
-                    }
-                    myAgent.send(reply);
-                } else{
+                } else {
                     block();
                 }
+
             }
         });
     }
+
 }
