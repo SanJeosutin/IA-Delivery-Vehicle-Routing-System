@@ -12,15 +12,15 @@ public class Position implements Serializable {
         return x;
     }
 
-    public void setX(double posX) {
-        x = posX;
+    public void setX(double x) {
+        this.x = x;
     }
 
     public double getY() {
         return y;
     }
 
-    public void setY(double posY) {
-        y = posY;
+    public void setY(double y) {
+        this.y = y;
     }
 }
