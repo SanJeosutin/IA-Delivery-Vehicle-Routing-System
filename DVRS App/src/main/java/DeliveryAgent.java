@@ -1,5 +1,6 @@
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
+import jade.core.AID;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 
@@ -12,6 +13,7 @@ public class DeliveryAgent extends Agent {
 
 
     protected void setup() {
+        System.out.println("Hello! Agent " + getAID().getName() + " is Ready");
         addBehaviour(new CyclicBehaviour(this) {
             @Override
             public void action() {
