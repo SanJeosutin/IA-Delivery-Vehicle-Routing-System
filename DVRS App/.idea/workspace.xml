@@ -5,10 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="823b2ac5-61f6-4808-9191-e5200d643526" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/Parcel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/DeliveryAgent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DeliveryAgent.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/MasterRoutingAgent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/MasterRoutingAgent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Position.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Position.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,10 +55,10 @@
     </key>
   </component>
   <component name="RunManager">
-    <configuration name="Boot" type="Application" factoryName="Application">
+    <configuration name="Boot" type="Application" factoryName="Application" activateToolWindowBeforeRun="false">
       <option name="MAIN_CLASS_NAME" value="jade.Boot" />
       <module name="DVRS App" />
-      <option name="PROGRAM_PARAMETERS" value="-gui -agents MRA:MasterRoutingAgent DA:DeliveryAgent" />
+      <option name="PROGRAM_PARAMETERS" value="-gui -agents MRA:MasterRoutingAgent;DA:DeliveryAgent;DA1:DeliveryAgent" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>

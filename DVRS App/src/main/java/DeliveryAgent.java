@@ -15,18 +15,17 @@ public class DeliveryAgent extends Agent {
     protected void setup() {
         System.out.println("Hello! Agent " + getAID().getName() + " is Ready");
         addBehaviour(new CyclicBehaviour(this) {
-            @Override
             public void action() {
                 ACLMessage message = receive();
-
                 if (message != null) {
-                    System.out.println("Received message from " + message.getSender().getName());
-                } else {
-                    block();
+                    System.out.println(getLocalName() + " Received message " + message.getContent() + " from " + message.getSender().getLocalName());
+                    ACLMessage reply = message.createReply();
+                    reply.setPerformative(ACLMessage.INFORM);
+                    reply.setContent("Agent " + getLocalName() + " responding!");
+                    System.out.println(getLocalName() + ": Sending response " + reply.getContent() + " to " + message.getAllReceiver().next());
+                    send(reply);
                 }
-
             }
         });
     }
-
 }
