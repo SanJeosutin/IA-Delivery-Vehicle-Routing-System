@@ -1,3 +1,4 @@
+import com.google.protobuf.Message;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.core.AID;
@@ -10,6 +11,7 @@ import java.util.List;
 
 public class DeliveryAgent extends Agent {
     private int maxCapacity;
+    private boolean enroute = false;
 
 
     protected void setup() {
@@ -18,6 +20,18 @@ public class DeliveryAgent extends Agent {
             public void action() {
                 ACLMessage message = receive();
                 if (message != null) {
+
+                    if (enroute) {
+                        System.out.println("Already en-route!");
+                    } else {
+                        try {
+                            System.out.println("Received route message!");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+
                     System.out.println(getLocalName() + " Received message " + message.getContent() + " from " + message.getSender().getLocalName());
                     ACLMessage reply = message.createReply();
                     reply.setPerformative(ACLMessage.INFORM);
