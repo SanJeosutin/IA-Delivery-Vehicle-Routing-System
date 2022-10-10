@@ -1,48 +1,35 @@
 package com.test.mainfx;
 
 import javafx.application.Application;
-import javafx.scene.Group;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.text.Font;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import org.kordamp.bootstrapfx.BootstrapFX;
+import org.kordamp.bootstrapfx.scene.layout.Panel;
 
 public class MainFX extends Application {
-
-    public static void main(String[] args) {
-        launch(args);
-    }
-
     @Override
-    public void start(Stage primaryStage) {
-        int x = 720, y = 720;
+    public void start(Stage primaryStage) throws Exception {                   //(1)
+        Panel panel = new Panel("Delivery Vehicle Routing System");
+        panel.getStyleClass().add("panel-primary");                            //(2)
+        BorderPane content = new BorderPane();
+        content.setPadding(new Insets(20));
+        Button button = new Button("Hello BootstrapFX");
+        button.getStyleClass().setAll("btn","btn-danger");                     //(2)
+        content.setCenter(button);
+        panel.setBody(content);
 
-        primaryStage.setTitle("Hello World");
-        Group root = new Group();
-        Scene scene = new Scene(root,x, y);
-
-        Label headingLbl = new Label("DVRS");
-        headingLbl.setFont(new Font("Arial", 32));
-
-        headingLbl.setLayoutX(x/2);
-        headingLbl.setLayoutY(y/6);
-
-
-        root.getChildren().add(headingLbl);
-        primaryStage.setScene(scene);
-        primaryStage.show();
-
-        /*
-        Button btn = new Button();
-        btn.setLayoutX(100);
-        btn.setLayoutY(80);
-        btn.setText("Hello World");
-        btn.setOnAction( actionEvent ->
+        button.setOnAction( actionEvent ->
                 System.out.println("Hello World"));
-        root.getChildren().add(btn);
+
+        Scene scene = new Scene(panel);
+        scene.getStylesheets().add(BootstrapFX.bootstrapFXStylesheet());       //(3)
+
+        primaryStage.setTitle("DVRS");
         primaryStage.setScene(scene);
+        primaryStage.sizeToScene();
         primaryStage.show();
-         */
     }
 }
