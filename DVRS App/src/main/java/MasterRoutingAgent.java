@@ -12,10 +12,11 @@ import java.util.Iterator;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MasterRoutingAgent extends Agent {
-
-    private Position position = new Position(0, 0);
+public class MasterRoutingAgent extends Agent implements MRAInterface {
+    private List<Node> nodes = new ArrayList<Node>();
     private List<Parcel> parcels = new ArrayList<Parcel>();
+    private Position position = new Position(0, 0);
+    private List<List<Double>> distanceMatrix = new ArrayList<List<Double>>();
 
 
     protected void setup() {
@@ -26,7 +27,8 @@ public class MasterRoutingAgent extends Agent {
             public void action() {
                 ACLMessage msg = receive();
                 if (msg != null) {
-                    System.out.println(getLocalName() + ": Received response" + msg.getContent() + " from " + msg.getSender().getLocalName());
+                    String[] response = msg.getContent().split(",");
+
                 }
                 block();
             }
@@ -49,15 +51,58 @@ public class MasterRoutingAgent extends Agent {
         send(msg);
     }
 
-    public void addParcel(Parcel parcel){
-        parcels.add(parcel);
+    @Override
+    public void startRoute(List<String> DAs) {
+        
     }
 
-    public void removeParcel(Parcel parcel){
-        parcels.remove(parcel);
+    @Override
+    public void newNode(Node n) {
+        // simple check when node is already on the 'list'
+        if (nodes.contains(n)) {
+            return;
+        }
+
+        List<Double> nodeDistances = new ArrayList<>();
+        for (int i = 0; i < nodes.size(); i++) {
+            // calculate distance different from pos x & y
+            double distanceDiffX = Math.pow(n.getX() - nodes.get(i).getX(), 2);
+            double distanceDiffY = Math.pow(n.getY() - nodes.get(i).getY(), 2);
+            double distance = Math.sqrt(distanceDiffX + distanceDiffY);
+
+            nodeDistances.add(distance);
+            distanceMatrix.get(i).add(distance);
+        }
+        distanceMatrix.add(nodeDistances);
+        nodes.add(n);
     }
 
-    private List<AID> getDeliveryAgents(){
+    @Override
+    public void removeNode(Node n) {
+        int pos = nodes.indexOf(n);
+
+        if (pos >= 0) {
+            for (int i = 0; i < distanceMatrix.size(); i++) {
+                if (i != pos) {
+                    distanceMatrix.get(i).remove(pos);
+                }
+            }
+            distanceMatrix.remove(pos);
+            nodes.remove(pos);
+        }
+    }
+
+    @Override
+    public void addParcel(Parcel p) {
+        parcels.add(p);
+    }
+
+    @Override
+    public void removeParcel(Parcel p) {
+        parcels.remove(p);
+    }
+
+    private List<AID> getDeliveryAgents() {
         AMSAgentDescription[] agents;
         List<AID> deliveryAgents = new ArrayList<>();
 
@@ -72,10 +117,10 @@ public class MasterRoutingAgent extends Agent {
             throw new RuntimeException(e);
         }
 
-        for(AMSAgentDescription agent : agents){
+        for (AMSAgentDescription agent : agents) {
             AID agentID = agent.getName();
 
-            if(agentID.getName().matches("^d\\d+@.*$")){
+            if (agentID.getName().matches("^d\\d+@.*$")) {
                 deliveryAgents.add(agentID);
             }
         }
