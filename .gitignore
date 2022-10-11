@@ -1,5 +1,5 @@
 # Ignoring workspace.xml file
-.idea/workspace.xml
+*/.idea/workspace.xml
 
 # Compiled class file
 *.class
