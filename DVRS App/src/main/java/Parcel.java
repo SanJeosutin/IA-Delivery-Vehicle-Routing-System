@@ -7,7 +7,7 @@ public class Parcel {
 
     @Override
     public String toString() {
-        return "Delivering: " + destination.toLowerCase();
+        return "Delivering to: " + destination.toLowerCase();
     }
 
     public String getDestination() {
