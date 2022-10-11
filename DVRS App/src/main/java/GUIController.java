@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Circle;
 
 import java.awt.*;
 import java.net.URL;
@@ -56,5 +57,9 @@ public class GUIController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+    }
+
+    public void alocatePosition(Circle circle){
+        mapPane.getChildren().add(circle);
     }
 }
