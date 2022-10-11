@@ -16,11 +16,13 @@ public class MainFX extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        //Load GUI from FXML
+        //load GUI from FXML
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/MainFX.fxml"));
         Parent root = loader.load();
         guiController = loader.getController();
         primaryStage.setTitle("Delivery Vehicle Routing System");
+
+        //setting-up the 'scene'
         Scene scene = new Scene(root);
         scene.getStylesheets().add(BootstrapFX.bootstrapFXStylesheet());
         primaryStage.setResizable(false);

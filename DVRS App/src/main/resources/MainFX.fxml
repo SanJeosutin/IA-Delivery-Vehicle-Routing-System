@@ -27,10 +27,10 @@
                      </Label>
                   </top>
                   <left>
-                     <Button id="agentCreateButton" mnemonicParsing="false" text="Create" BorderPane.alignment="CENTER" />
+                     <Button fx:id="agentCreateButton" mnemonicParsing="false" text="Create" BorderPane.alignment="CENTER" />
                   </left>
                   <right>
-                     <Button id="agentDeleteButton" alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" text="Delete" BorderPane.alignment="CENTER" />
+                     <Button fx:id="agentDeleteButton" alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" text="Delete" BorderPane.alignment="CENTER" />
                   </right>
                   <padding>
                      <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
@@ -45,10 +45,10 @@
                      </Label>
                   </top>
                   <left>
-                     <Button id="parcelCreateButton" mnemonicParsing="false" text="Create" BorderPane.alignment="CENTER" />
+                     <Button fx:id="parcelCreateButton" mnemonicParsing="false" text="Create" BorderPane.alignment="CENTER" />
                   </left>
                   <right>
-                     <Button id="parcelDeleteButton" alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" text="Delete" BorderPane.alignment="CENTER" />
+                     <Button fx:id="parcelDeleteButton" alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" text="Delete" BorderPane.alignment="CENTER" />
                   </right>
                   <padding>
                      <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
@@ -63,10 +63,10 @@
                      </Label>
                   </top>
                   <left>
-                     <Button id="routeShowButton" mnemonicParsing="false" text="Show" BorderPane.alignment="CENTER" />
+                     <Button fx:id="routeShowButton" mnemonicParsing="false" text="Show" BorderPane.alignment="CENTER" />
                   </left>
                   <right>
-                     <Button id="routeHideButton" alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" text="Hide" BorderPane.alignment="CENTER" />
+                     <Button fx:id="routeHideButton" alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" text="Hide" BorderPane.alignment="CENTER" />
                   </right>
                   <padding>
                      <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
@@ -81,10 +81,10 @@
                      </Label>
                   </top>
                   <left>
-                     <Button id="NodeCreateButton" mnemonicParsing="false" text="Create" BorderPane.alignment="CENTER" />
+                     <Button fx:id="NodeCreateButton" mnemonicParsing="false" text="Create" BorderPane.alignment="CENTER" />
                   </left>
                   <right>
-                     <Button id="NodeDeleteButton" alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" text="Delete" BorderPane.alignment="CENTER" />
+                     <Button fx:id="NodeDeleteButton" alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" text="Delete" BorderPane.alignment="CENTER" />
                   </right>
                   <padding>
                      <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
@@ -99,10 +99,10 @@
                      </Label>
                   </top>
                   <left>
-                     <Button id="programStartButton" mnemonicParsing="false" text="Start" BorderPane.alignment="CENTER" />
+                     <Button fx:id="programStartButton" mnemonicParsing="false" text="Start" BorderPane.alignment="CENTER" />
                   </left>
                   <right>
-                     <Button id="programPauseButton" alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" text="Pause" BorderPane.alignment="CENTER" />
+                     <Button fx:id="programPauseButton" alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" text="Pause" BorderPane.alignment="CENTER" />
                   </right>
                   <padding>
                      <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
@@ -110,7 +110,7 @@
                </BorderPane>
             </children>
          </HBox>
-         <Pane style="-fx-background-color: lightgrey;" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="145.0" />
+         <Pane fx:id="mapPane" style="-fx-background-color: lightgrey;" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="145.0" />
       </children>
     </AnchorPane>
    <HBox alignment="CENTER" spacing="25.0">
@@ -118,13 +118,13 @@
          <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefWidth="375.0">
            <items>
                <Label text="Active Agent(s)" />
-               <ListView prefHeight="250.0" prefWidth="200.0" />
+               <ListView fx:id="agentsList" prefHeight="250.0" prefWidth="200.0" />
            </items>
          </SplitPane>
          <SplitPane dividerPositions="0.5" layoutX="10.0" layoutY="10.0" orientation="VERTICAL" prefWidth="375.0">
             <items>
                <Label text="Parcel(s)" />
-               <ListView prefHeight="250.0" prefWidth="200.0" />
+               <ListView fx:id="parcelsList" prefHeight="250.0" prefWidth="200.0" />
             </items>
          </SplitPane>
       </children>
