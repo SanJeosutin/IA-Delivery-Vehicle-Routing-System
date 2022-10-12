@@ -14,6 +14,7 @@ import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import org.kordamp.bootstrapfx.BootstrapFX;
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,8 +28,8 @@ public class MainFX extends Application {
     private List<Node> nodes = new ArrayList<>();
     private List<Parcel> parcels = new ArrayList<>();
 
-    private int initPosX = 100;
-    private int initPosY = 100;
+    private int initPosX = 350;
+    private int initPosY = 225;
 
     //could generate colours instead of hard coding it :/
     private Color[] agentColors = {
@@ -76,8 +77,6 @@ public class MainFX extends Application {
     }
 
     private void setupAgents() throws StaleProxyException {
-
-
         Runtime runtime = Runtime.instance();
         Profile profile = new ProfileImpl(null, 8888, null);
         containerController = runtime.createMainContainer(profile);
@@ -88,12 +87,23 @@ public class MainFX extends Application {
         guiController.alocatePosition(warehouse);
     }
 
-    private void addDeliveryAgent(int capacity) {
+    public void addDeliveryAgent(int capacity) throws StaleProxyException {
         Circle drawAgent = new Circle(initPosX, initPosY, 6, agentColors[colorPos]);
         colorPos++;
+
+        String drawAgentRef = "DA" + guiController.agentsObjectList.size()+1;
+        guiController.registerNode(drawAgent, drawAgentRef);
+
+        AgentController newDeliveryAgent = containerController.createNewAgent(
+                drawAgentRef,
+                DeliveryAgent.class.getName(),
+                new Object[] {drawAgent, capacity}
+        );
+
+        guiController.agentsObjectList.add(newDeliveryAgent.getName());
     }
 
-    private void readData() throws IOException {
+    private void readData() throws IOException, StaleProxyException {
         CSVReader reader = new CSVReader();
         List<List<String>> data = reader.readFile("/data/test.txt");
 
