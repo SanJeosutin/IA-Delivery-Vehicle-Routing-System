@@ -13,7 +13,7 @@ public class Node implements Serializable {
     }
 
     public Circle create() {
-        Circle node = new Circle(pos.getX(), pos.getY(), 25, Color.BLACK);
+        Circle node = new Circle(pos.getX(), pos.getY(), 3, Color.BLACK);
         node.toBack();
         return node;
     }
@@ -34,7 +34,7 @@ public class Node implements Serializable {
         return pos.getY();
     }
 
-    public boolean amI() {
-        return id.equals(id);
+    public boolean amI(String id) {
+        return this.id.equals(this.id);
     }
 }

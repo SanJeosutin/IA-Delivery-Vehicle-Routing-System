@@ -1,6 +1,5 @@
 import jade.core.AID;
 import jade.core.Agent;
-import jade.domain.AMSEventQueueFeeder;
 import jade.domain.AMSService;
 import jade.domain.FIPAAgentManagement.AMSAgentDescription;
 import jade.domain.FIPAAgentManagement.SearchConstraints;
@@ -13,13 +12,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MasterRoutingAgent extends Agent implements MRAInterface {
-    private List<Node> nodes = new ArrayList<Node>();
-    private List<Parcel> parcels = new ArrayList<Parcel>();
+    private List<Node> nodes = new ArrayList<>();
+    private List<Parcel> parcels = new ArrayList<>();
+    private List<Integer> agentCapacity = new ArrayList<>();
+
     private Position position = new Position(0, 0);
-    private List<List<Double>> distanceMatrix = new ArrayList<List<Double>>();
+    private List<List<Double>> distanceMatrix = new ArrayList<>();
 
 
     protected void setup() {
+        //initialised O2AInterface before calling in MRAInterface
+        registerO2AInterface(MRAInterface.class, this);
         System.out.println("Hello! Agent " + getAID().getName() + " is Ready");
         //First set-up message receiving behaviour
         CyclicBehaviour messageListeningBehaviour = new CyclicBehaviour(this) {

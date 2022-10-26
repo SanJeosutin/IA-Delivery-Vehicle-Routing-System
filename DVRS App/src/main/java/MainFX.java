@@ -31,17 +31,7 @@ public class MainFX extends Application {
     private int initPosY = 225;
 
     //could generate colours instead of hard coding it :/
-    private Color[] agentColors = {
-            Color.DARKGREEN,
-            Color.DARKBLUE,
-            Color.DARKORANGE,
-            Color.DARKRED,
-            Color.DARKCYAN,
-            Color.DARKGOLDENROD,
-            Color.DARKKHAKI,
-            Color.DARKMAGENTA,
-            Color.DARKORANGE
-    };
+    private Color[] agentColors = {Color.DARKGREEN, Color.DARKBLUE, Color.DARKORANGE, Color.DARKRED, Color.DARKCYAN, Color.DARKGOLDENROD, Color.DARKKHAKI, Color.DARKMAGENTA, Color.DARKORANGE};
 
     private int colorPos = 0;
 
@@ -53,7 +43,23 @@ public class MainFX extends Application {
 
         readData();
         guiController.populateAgentslist();
+        guiController.populateParcelslist();
         guiController.MainFXClass = this;
+    }
+
+    public static void main (String[] args) {
+        launch(args);
+    }
+
+    public void playScenario() throws StaleProxyException {
+        List<String> DAs = new ArrayList<>();
+
+        for (Object object : guiController.agentsObjectList) {
+            DAs.add(object.toString().substring(0, object.toString().indexOf("@")));
+        }
+
+        MRAInterface mraInterface = agentController.getO2AInterface(MRAInterface.class);
+        mraInterface.startRoute(DAs);
     }
 
     private void killProgram(Stage primaryStage) {
@@ -82,9 +88,11 @@ public class MainFX extends Application {
         Runtime runtime = Runtime.instance();
         Profile profile = new ProfileImpl(null, 8888, null);
         containerController = runtime.createMainContainer(profile);
+
         agentController = containerController.createNewAgent("MRA", MasterRoutingAgent.class.getName(), new Object[0]);
         agentController.start();
 
+        //placed warehouse (MRA) route pos
         Circle warehouse = new Circle(initPosX, initPosY, 12, Color.BLUE);
         guiController.alocatePosition(warehouse);
     }
@@ -96,11 +104,7 @@ public class MainFX extends Application {
         String drawAgentRef = "DA" + guiController.agentsObjectList.size() + 1;
         guiController.registerNode(drawAgent, drawAgentRef);
 
-        AgentController newDeliveryAgent = containerController.createNewAgent(
-                drawAgentRef,
-                DeliveryAgent.class.getName(),
-                new Object[]{drawAgent, capacity}
-        );
+        AgentController newDeliveryAgent = containerController.createNewAgent(drawAgentRef, DeliveryAgent.class.getName(), new Object[]{drawAgent, capacity});
         newDeliveryAgent.start();
         guiController.agentsObjectList.add(newDeliveryAgent.getName());
     }
@@ -111,29 +115,19 @@ public class MainFX extends Application {
         guiController.refreshGUI();
         containerController.getAgent(agentName.substring(0, agentName.indexOf("@"))).kill();
     }
-    private void readData() throws IOException, StaleProxyException {
-        CSVReader reader = new CSVReader();
-        List<List<String>> data = reader.readFile("G:\\Uni Stuff\\Semester 6\\Intelligent System\\Assignment\\IA-Delivery-Vehicle-Routing-System\\DVRS App\\src\\main\\resources\\data\\test.txt");
 
-        for (List<String> eachData : data) {
-            String type = eachData.get(0);
+    public void addParcel(Parcel parcel) throws StaleProxyException {
+        parcels.add(parcel);
+        guiController.registerParcel(parcel);
 
-            switch (type) {
-                case "AGENT":
-                    for (int i = 0; i < Integer.parseInt(eachData.get(1)); i++) {
-                        addDeliveryAgent(Integer.parseInt(eachData.get(i + 1)));
-                    }
-                    break;
-/*
-                case "NODE":
-                    Position nodePos = new Position(Double.parseDouble(eachData.get(1)), Double.parseDouble(eachData.get(2)));
-                    addNode(eachData.get(3), nodePos);
-                    break;
- */
-            }
+        agentController.getO2AInterface(MRAInterface.class).addParcel(parcel);
+    }
 
-        }
+    public void removeParcel(Parcel parcel) throws StaleProxyException {
+        parcels.remove(parcel);
+        guiController.deregisterParcel(parcel);
 
+        agentController.getO2AInterface(MRAInterface.class).removeParcel(parcel);
     }
 
     public void addNode(String id, Position pos) {
@@ -148,7 +142,43 @@ public class MainFX extends Application {
         }
     }
 
-    private void initialiseMRA() {
+    public void removeNode(String id) throws StaleProxyException {
+        for (Node node : nodes) {
+            if (node.amI(id)) {
+                nodes.remove(node);
+                agentController.getO2AInterface(MRAInterface.class).removeNode(node);
+            }
+            break;
+        }
+    }
+
+    private void readData() throws IOException, StaleProxyException {
+        CSVReader reader = new CSVReader();
+        List<List<String>> data = reader.readFile("G:\\Uni Stuff\\Semester 6\\Intelligent System\\Assignment\\IA-Delivery-Vehicle-Routing-System\\DVRS App\\src\\main\\resources\\data\\test.txt");
+
+        for (List<String> eachData : data) {
+            String type = eachData.get(0);
+
+            switch (type) {
+                case "AGENT":
+                    for (int i = 0; i < Integer.parseInt(eachData.get(1)); i++) {
+                        addDeliveryAgent(Integer.parseInt(eachData.get(i + 1)));
+                    }
+                    break;
+
+                case "NODE":
+                    Position nodePos = new Position(Double.parseDouble(eachData.get(1)), Double.parseDouble(eachData.get(2)));
+                    addNode(eachData.get(3), nodePos);
+                    break;
+
+                case "PARCEL":
+                    Parcel parcel = new Parcel(Integer.parseInt(eachData.get(1)), eachData.get(2), eachData.get(3));
+                    addParcel(parcel);
+                    break;
+            }
+
+        }
 
     }
+
 }

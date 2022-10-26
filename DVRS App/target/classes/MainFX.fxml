@@ -99,7 +99,7 @@
                      </Label>
                   </top>
                   <left>
-                     <Button fx:id="programStartButton" mnemonicParsing="false" text="Start" BorderPane.alignment="CENTER" />
+                     <Button fx:id="programStartButton" onAction="#programStartButton" text="Start" BorderPane.alignment="CENTER" />
                   </left>
                   <right>
                      <Button fx:id="programPauseButton" alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" text="Pause" BorderPane.alignment="CENTER" />

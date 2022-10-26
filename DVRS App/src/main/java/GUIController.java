@@ -63,6 +63,13 @@ public class GUIController implements Initializable {
     @FXML
     public ObservableList<Object> agentsObjectList = FXCollections.observableArrayList();
 
+    @FXML
+    public ObservableList<Parcel> parcelObjectList = FXCollections.observableArrayList();
+
+    @FXML
+    public void programStartButton() throws StaleProxyException {
+        MainFXClass.playScenario();
+    }
     private Map<Circle, Text> circleReference = new HashMap<>();
 
     @Override
@@ -102,8 +109,6 @@ public class GUIController implements Initializable {
                 System.out.println("Deleting Parcel...");
             }
         });
-
-
     }
 
     public void createAgentWindow() throws StaleProxyException {
@@ -152,7 +157,7 @@ public class GUIController implements Initializable {
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
         confirm.setTitle("Delivery Agent Deletion");
         confirm.setHeaderText(null);
-        confirm.setContentText("Are you sure you want to remove " + index + "?");
+        confirm.setContentText("Are you sure you want to remove DA" + index + "1?");
 
         Optional<ButtonType> output = confirm.showAndWait();
 
@@ -160,12 +165,15 @@ public class GUIController implements Initializable {
             MainFXClass.removeDeliveryAgent(index);
             agentsObjectList.remove(index);
             populateAgentslist();
-            displayModal(Alert.AlertType.INFORMATION, "INFO - Delivery Agent Deletion", "Successfully deleted agent " + index + ".");
+            displayModal(Alert.AlertType.INFORMATION, "INFO - Delivery Agent Deletion", "Successfully deleted agent DA" + index + "1.");
         }
     }
 
     public void populateAgentslist() {
         agentsList.setItems(FXCollections.observableArrayList(agentsObjectList));
+    }
+    public void populateParcelslist() {
+        parcelsList.setItems(FXCollections.observableArrayList(parcelObjectList));
     }
 
     private void displayModal(Alert.AlertType type, String title, String description) {
@@ -197,6 +205,14 @@ public class GUIController implements Initializable {
                 mapPane.getChildren().remove(circle);
             }
         }
+    }
+
+    public void registerParcel(Parcel parcel) {
+        parcelObjectList.add(parcel);
+    }
+
+    public void deregisterParcel(Parcel parcel) {
+        parcelObjectList.remove(parcel);
     }
 
     public void refreshGUI() {
