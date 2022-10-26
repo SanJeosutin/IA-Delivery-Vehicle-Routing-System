@@ -152,6 +152,9 @@ public class MainFX extends Application {
         }
     }
 
+    public boolean nodeExist(String name) {
+        return nodes.stream().anyMatch(node -> node.amI(name));
+    }
     private void readData() throws IOException, StaleProxyException {
         CSVReader reader = new CSVReader();
         List<List<String>> data = reader.readFile("G:\\Uni Stuff\\Semester 6\\Intelligent System\\Assignment\\IA-Delivery-Vehicle-Routing-System\\DVRS App\\src\\main\\resources\\data\\test.txt");

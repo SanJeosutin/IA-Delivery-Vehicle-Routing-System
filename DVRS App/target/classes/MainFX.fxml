@@ -45,10 +45,10 @@
                      </Label>
                   </top>
                   <left>
-                     <Button fx:id="parcelCreateButton" mnemonicParsing="false" text="Create" BorderPane.alignment="CENTER" />
+                     <Button fx:id="parcelCreateButton" onAction="#addParcelWindow" text="Create" BorderPane.alignment="CENTER" />
                   </left>
                   <right>
-                     <Button fx:id="parcelDeleteButton" alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" text="Delete" BorderPane.alignment="CENTER" />
+                     <Button fx:id="parcelDeleteButton" onAction="#removeParcelWindow" alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" text="Delete" BorderPane.alignment="CENTER" />
                   </right>
                   <padding>
                      <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
@@ -84,7 +84,7 @@
                      <Button fx:id="NodeCreateButton" mnemonicParsing="false" text="Create" BorderPane.alignment="CENTER" />
                   </left>
                   <right>
-                     <Button fx:id="NodeDeleteButton" alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" text="Delete" BorderPane.alignment="CENTER" />
+                     <Button fx:id="NodeDeleteButton" onAction="#removeNodeWindow" alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" text="Delete" BorderPane.alignment="CENTER" />
                   </right>
                   <padding>
                      <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
