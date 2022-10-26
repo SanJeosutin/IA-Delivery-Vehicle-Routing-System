@@ -4,15 +4,18 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.event.EventTarget;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 
 import java.awt.*;
@@ -77,6 +80,29 @@ public class GUIController implements Initializable {
                 }
             }
         });
+
+        agentDeleteButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                System.out.println("Deleting Agent...");
+            }
+        });
+
+        parcelCreateButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                System.out.println("Creating Parcel...");
+            }
+        });
+
+        parcelDeleteButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                System.out.println("Deleting Parcel...");
+            }
+        });
+
+
     }
 
     public void createAgentWindow() throws StaleProxyException {
@@ -93,7 +119,7 @@ public class GUIController implements Initializable {
             Optional<String> response = dialog.showAndWait();
             if (response.isPresent()) {
                 String newCapacity = response.get();
-                if (newCapacity.isEmpty()) {
+                if (newCapacity.isBlank()) {
                     displayModal(Alert.AlertType.ERROR, "Error - Agent Capacity", "Please enter the max capacity for the new Delivery Agent.");
                 } else {
                     try {
@@ -103,6 +129,8 @@ public class GUIController implements Initializable {
                         displayModal(Alert.AlertType.ERROR, "Error - Agent Capacity", "Please enter the max capacity for the new Delivery Agent.");
                     }
                 }
+            } else {
+                return;
             }
         }
 

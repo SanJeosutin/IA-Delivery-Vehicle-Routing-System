@@ -13,8 +13,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import org.kordamp.bootstrapfx.BootstrapFX;
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -51,6 +49,10 @@ public class MainFX extends Application {
         setupScene(primaryStage);
         killProgram(primaryStage);
         setupAgents();
+
+        readData();
+        guiController.populateAgentslist();
+        guiController.MainFXClass = this;
     }
 
     private void killProgram(Stage primaryStage) {
@@ -70,7 +72,6 @@ public class MainFX extends Application {
 
         //setting-up the 'scene'
         Scene scene = new Scene(root);
-        scene.getStylesheets().add(BootstrapFX.bootstrapFXStylesheet());
         primaryStage.setResizable(false);
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -91,21 +92,21 @@ public class MainFX extends Application {
         Circle drawAgent = new Circle(initPosX, initPosY, 6, agentColors[colorPos]);
         colorPos++;
 
-        String drawAgentRef = "DA" + guiController.agentsObjectList.size()+1;
+        String drawAgentRef = "DA" + guiController.agentsObjectList.size() + 1;
         guiController.registerNode(drawAgent, drawAgentRef);
 
         AgentController newDeliveryAgent = containerController.createNewAgent(
                 drawAgentRef,
                 DeliveryAgent.class.getName(),
-                new Object[] {drawAgent, capacity}
+                new Object[]{drawAgent, capacity}
         );
-
+        newDeliveryAgent.start();
         guiController.agentsObjectList.add(newDeliveryAgent.getName());
     }
 
     private void readData() throws IOException, StaleProxyException {
         CSVReader reader = new CSVReader();
-        List<List<String>> data = reader.readFile("/data/test.txt");
+        List<List<String>> data = reader.readFile("G:\\Uni Stuff\\Semester 6\\Intelligent System\\Assignment\\IA-Delivery-Vehicle-Routing-System\\DVRS App\\src\\main\\resources\\data\\test.txt");
 
         for (List<String> eachData : data) {
             String type = eachData.get(0);
@@ -116,10 +117,27 @@ public class MainFX extends Application {
                         addDeliveryAgent(Integer.parseInt(eachData.get(i + 1)));
                     }
                     break;
+
+                case "NODE":
+                    Position nodePos = new Position(Double.parseDouble(eachData.get(1)), Double.parseDouble(eachData.get(2)));
+                    addNode(eachData.get(3), nodePos);
+                    break;
             }
 
         }
 
+    }
+
+    public void addNode(String id, Position pos) {
+        Node node = new Node(id, pos);
+        guiController.registerNode(node.create(), id);
+        nodes.add(node);
+
+        try {
+            agentController.getO2AInterface(MRAInterface.class).newNode(node);
+        } catch (StaleProxyException e) {
+            e.printStackTrace();
+        }
     }
 
     private void initialiseMRA() {

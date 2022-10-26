@@ -15,7 +15,7 @@ public class DeliveryAgent extends Agent {
     private Circle agentBody;
 
     protected void setup() {
-        System.out.println("Hello! Delivery Agent " + getAID().getName() + " is Ready");
+        System.out.println("Hello! " + getAID().getName() + " is Ready");
         addBehaviour(new CyclicBehaviour(this) {
             public void action() {
                 ACLMessage message = receive();

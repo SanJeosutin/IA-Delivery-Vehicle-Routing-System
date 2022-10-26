@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -10,7 +11,7 @@ public class CSVReader {
 
     public List<List<String>> readFile(String filePath) throws IOException {
         String row;
-        List<List<String>> result = null;
+        List<List<String>> result = new ArrayList<>();
         BufferedReader reader = new BufferedReader(new FileReader(filePath));
 
         while ((row = reader.readLine()) != null) {
