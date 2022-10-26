@@ -162,7 +162,7 @@ public class GUIController implements Initializable {
         int index = agentsList.getSelectionModel().getSelectedIndex();
 
         if (index < 0 || index >= agentsObjectList.size()) {
-            displayModal(Alert.AlertType.WARNING, "WARNING - Delivery Agent", "Please select Agent First before removing them.");
+            displayModal(Alert.AlertType.WARNING, "WARNING - Delivery Agent Deletion", "Please select Agent First before removing them.");
             return;
         }
 
@@ -198,12 +198,12 @@ public class GUIController implements Initializable {
             String nodeName = result.get();
 
             if (nodeName.isBlank()) {
-                displayModal(Alert.AlertType.ERROR, "ERROR - Node", "Please enter new node name.");
+                displayModal(Alert.AlertType.ERROR, "ERROR - Node Creation", "Please enter new node name.");
             } else if (MainFXClass.nodeExist(nodeName)) {
-                displayModal(Alert.AlertType.ERROR, "ERROR - Node", "Name already registered. Try a new one.");
+                displayModal(Alert.AlertType.ERROR, "ERROR - Node Creation", "Name already registered. Try a new one.");
             } else {
                 MainFXClass.addNode(nodeName, new Position(posX, posY));
-                displayModal(Alert.AlertType.INFORMATION, "SUCCESS - Node", "Successfully creating Node with name " + nodeName + ".");
+                displayModal(Alert.AlertType.INFORMATION, "SUCCESS - Node Creation", "Successfully creating Node with name " + nodeName + ".");
 
                 complete = true;
             }
@@ -212,12 +212,12 @@ public class GUIController implements Initializable {
 
     public void removeNodeWindow() throws StaleProxyException {
         if (nodeSelect == null) {
-            displayModal(Alert.AlertType.WARNING, "WARNING - Node", "Please select a node from the map.");
+            displayModal(Alert.AlertType.WARNING, "WARNING - Node Deletion", "Please select a node from the map.");
             return;
         }
 
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
-        confirm.setTitle("Delete Node");
+        confirm.setTitle("Node Deletion");
         confirm.setContentText("Do you want to delete selected node?");
 
         Optional<ButtonType> output = confirm.showAndWait();
@@ -242,47 +242,25 @@ public class GUIController implements Initializable {
 
             mapPane.getChildren().removeAll(nodeSelect, removeText);
 
+            nodeSelect = null;
+            nodeSelectColour = null;
+
             displayModal(Alert.AlertType.INFORMATION, "SUCCESS - Node", "Successfully remove selected node.");
-            parcelsList.setItems(parcelObjectList);
-            populateAgentslist();
         }
     }
 
     @FXML
     public void addParcelWindow() throws StaleProxyException {
         if (nodeSelect == null) {
-            displayModal(Alert.AlertType.WARNING, "WARNING", "Please select a destination node first");
+            displayModal(Alert.AlertType.WARNING, "WARNING - Parcel Creation", "Please select a destination node first");
             return;
         }
+        int weight = 0;
 
         TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle("Create New Parcel");
-        dialog.setHeaderText("New Parcel");
-        dialog.setContentText("Parcel Weight:");
-        int weight = 0;
-        boolean hasWeight = false;
 
-        while (!hasWeight) {
-            Optional<String> response = dialog.showAndWait();
-            if (response.isPresent()) {
-                String newWeight = response.get();
-                if (newWeight.isBlank()) {
-                    displayModal(Alert.AlertType.ERROR, "ERROR - New Parcel", "Please enter a weight");
-                } else {
-                    try {
-                        weight = Integer.parseInt(newWeight);
-                        hasWeight = true;
-                    } catch (NumberFormatException e) {
-                        displayModal(Alert.AlertType.ERROR, "ERROR - New Parcel", "Please enter a number for weight");
-                    }
-                }
-            } else {
-                return;
-            }
-        }
-
-        dialog = new TextInputDialog();
-        dialog.setTitle("Create New Parcel");
+        // parcel name
+        dialog.setTitle("Parcel Creation");
         dialog.setHeaderText("New Parcel");
         dialog.setContentText("Parcel Name:");
 
@@ -294,7 +272,7 @@ public class GUIController implements Initializable {
             if (response.isPresent()) {
                 String newName = response.get();
                 if (newName.isBlank()) {
-                    displayModal(Alert.AlertType.ERROR, "ERROR - New Parcel", "Please enter parcel name");
+                    displayModal(Alert.AlertType.ERROR, "ERROR - Parcel Creation", "Please enter parcel name");
                 } else {
                     parcelName = newName;
                     hasName = true;
@@ -304,38 +282,61 @@ public class GUIController implements Initializable {
             }
         }
 
+        //parcel weight
+        dialog = new TextInputDialog();
+        dialog.setTitle("Parcel Creation");
+        dialog.setHeaderText("New Parcel");
+        dialog.setContentText("Parcel Weight:");
+
+        boolean hasWeight = false;
+
+        while (!hasWeight) {
+            Optional<String> response = dialog.showAndWait();
+            if (response.isPresent()) {
+                String newWeight = response.get();
+                if (newWeight.isBlank()) {
+                    displayModal(Alert.AlertType.ERROR, "ERROR - Parcel Creation", "Please enter a weight");
+                } else {
+                    try {
+                        weight = Integer.parseInt(newWeight);
+                        hasWeight = true;
+                    } catch (NumberFormatException e) {
+                        displayModal(Alert.AlertType.ERROR, "ERROR - Parcel Creation", "Please enter a number for weight");
+                    }
+                }
+            } else {
+                return;
+            }
+        }
+
         Parcel parcel = new Parcel(weight, circleReference.get(nodeSelect).getText(), parcelName);
         MainFXClass.addParcel(parcel);
 
-        displayModal(Alert.AlertType.INFORMATION, "SUCCESS - New Parcel", parcelName + " with weight of " + weight + ". Has been successfully created.");
+        displayModal(Alert.AlertType.INFORMATION, "SUCCESS - Parcel Creation", parcelName + " with weight of " + weight + ". Has been successfully created.");
     }
 
     @FXML
     public void removeParcelWindow() throws StaleProxyException {
         Parcel selectedParcel = (Parcel) parcelsList.getSelectionModel().getSelectedItem();
         if (selectedParcel == null) {
-            displayModal(Alert.AlertType.WARNING, "WARNING - Remove Parcel", "Please select a parcel first");
+            displayModal(Alert.AlertType.WARNING, "WARNING - Parcel Deletion", "Please select a parcel first");
             return;
         }
 
         Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmation.setTitle("Removing Parcel");
+        confirmation.setTitle("Parcel Deletion");
         confirmation.setContentText("Are you sure you want to delete this parcel?");
 
         Optional<ButtonType> result = confirmation.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
             MainFXClass.removeParcel(selectedParcel);
 
-            displayModal(Alert.AlertType.INFORMATION, "SUCCESS - Remove Parcel", "Parcel has been removed.");
+            displayModal(Alert.AlertType.INFORMATION, "SUCCESS - Parcel Deletion", "Parcel with the name of " + selectedParcel.getName() + " has been removed.");
         }
     }
 
     public void populateAgentslist() {
         agentsList.setItems(FXCollections.observableArrayList(agentsObjectList));
-    }
-
-    public void populateParcelslist() {
-        parcelsList.setItems(FXCollections.observableArrayList(parcelObjectList));
     }
 
     private void displayModal(Alert.AlertType type, String title, String description) {
@@ -353,6 +354,7 @@ public class GUIController implements Initializable {
         circle.setPickOnBounds(false);
 
         Text text = new Text(id);
+        text.setMouseTransparent(true);
         text.setX(circle.getCenterX() + text.getBoundsInLocal().getWidth() / 2);
         text.setY(circle.getCenterY() + text.getBoundsInLocal().getHeight() / 2);
 
@@ -362,7 +364,7 @@ public class GUIController implements Initializable {
         circleReference.put(circle, text);
     }
 
-    public void deregisterNode(String reference, int i) {
+    public void deregisterNode(String reference) {
         for (Circle circle : circleReference.keySet()) {
             if (circleReference.get(circle).getText().equals(reference)) {
                 mapPane.getChildren().remove(circle);

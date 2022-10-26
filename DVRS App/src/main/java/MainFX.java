@@ -43,12 +43,8 @@ public class MainFX extends Application {
 
         readData();
         guiController.populateAgentslist();
-        guiController.populateParcelslist();
-        guiController.MainFXClass = this;
-    }
 
-    public static void main (String[] args) {
-        launch(args);
+        guiController.MainFXClass = this;
     }
 
     public void playScenario() throws StaleProxyException {
@@ -60,6 +56,11 @@ public class MainFX extends Application {
 
         MRAInterface mraInterface = agentController.getO2AInterface(MRAInterface.class);
         mraInterface.startRoute(DAs);
+
+        // remove parcels once the DAs are delivering them
+        for(int i = 0; i < parcels.size(); i++){
+            removeParcel(parcels.get(i));
+        }
     }
 
     private void killProgram(Stage primaryStage) {
@@ -111,7 +112,7 @@ public class MainFX extends Application {
 
     public void removeDeliveryAgent(int id) throws ControllerException {
         String agentName = guiController.agentsObjectList.get(id).toString();
-        guiController.deregisterNode(agentName.substring(0), agentName.indexOf("@"));
+        guiController.deregisterNode(agentName.substring(0, agentName.indexOf("@")));
         guiController.refreshGUI();
         containerController.getAgent(agentName.substring(0, agentName.indexOf("@"))).kill();
     }
