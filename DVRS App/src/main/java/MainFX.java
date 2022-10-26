@@ -117,11 +117,12 @@ public class MainFX extends Application {
                         addDeliveryAgent(Integer.parseInt(eachData.get(i + 1)));
                     }
                     break;
-
+/*
                 case "NODE":
                     Position nodePos = new Position(Double.parseDouble(eachData.get(1)), Double.parseDouble(eachData.get(2)));
                     addNode(eachData.get(3), nodePos);
                     break;
+ */
             }
 
         }
