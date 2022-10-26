@@ -1,25 +1,20 @@
+import jade.tools.sniffer.AgentList;
+import jade.wrapper.ControllerException;
 import jade.wrapper.StaleProxyException;
-import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.event.EventTarget;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextInputDialog;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 
-import java.awt.*;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -68,6 +63,8 @@ public class GUIController implements Initializable {
     @FXML
     public ObservableList<Object> agentsObjectList = FXCollections.observableArrayList();
 
+    private Map<Circle, Text> circleReference = new HashMap<>();
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         agentCreateButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -84,7 +81,11 @@ public class GUIController implements Initializable {
         agentDeleteButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                System.out.println("Deleting Agent...");
+                try {
+                    removeAgentWindow();
+                } catch (ControllerException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
 
@@ -140,6 +141,29 @@ public class GUIController implements Initializable {
         displayModal(Alert.AlertType.CONFIRMATION, "SUCCESS - Delivery Agent", "Successfully creating Delivery Agent with " + capacity + " max capacity.");
     }
 
+    public void removeAgentWindow() throws ControllerException {
+        int index = agentsList.getSelectionModel().getSelectedIndex();
+
+        if (index < 0 || index >= agentsObjectList.size()) {
+            displayModal(Alert.AlertType.WARNING, "WARNING - Delivery Agent", "Please select Agent First before removing them.");
+            return;
+        }
+
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.setTitle("Delivery Agent Deletion");
+        confirm.setHeaderText(null);
+        confirm.setContentText("Are you sure you want to remove " + index + "?");
+
+        Optional<ButtonType> output = confirm.showAndWait();
+
+        if (output.isPresent() && output.get() == ButtonType.OK) {
+            MainFXClass.removeDeliveryAgent(index);
+            agentsObjectList.remove(index);
+            populateAgentslist();
+            displayModal(Alert.AlertType.INFORMATION, "INFO - Delivery Agent Deletion", "Successfully deleted agent " + index + ".");
+        }
+    }
+
     public void populateAgentslist() {
         agentsList.setItems(FXCollections.observableArrayList(agentsObjectList));
     }
@@ -163,5 +187,20 @@ public class GUIController implements Initializable {
         text.setY(circle.getCenterY() - text.getBoundsInLocal().getHeight() / 2);
 
         mapPane.getChildren().add(circle);
+
+        circleReference.put(circle, text);
     }
+
+    public void deregisterNode(String reference, int i) {
+        for (Circle circle : circleReference.keySet()) {
+            if (circleReference.get(circle).getText().equals(reference)) {
+                mapPane.getChildren().remove(circle);
+            }
+        }
+    }
+
+    public void refreshGUI() {
+        agentsList.setItems(FXCollections.observableArrayList(agentsObjectList));
+    }
+
 }

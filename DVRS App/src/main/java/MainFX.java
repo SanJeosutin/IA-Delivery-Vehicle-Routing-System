@@ -3,6 +3,7 @@ import jade.core.ProfileImpl;
 import jade.core.Runtime;
 import jade.wrapper.AgentController;
 import jade.wrapper.ContainerController;
+import jade.wrapper.ControllerException;
 import jade.wrapper.StaleProxyException;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -104,6 +105,12 @@ public class MainFX extends Application {
         guiController.agentsObjectList.add(newDeliveryAgent.getName());
     }
 
+    public void removeDeliveryAgent(int id) throws ControllerException {
+        String agentName = guiController.agentsObjectList.get(id).toString();
+        guiController.deregisterNode(agentName.substring(0), agentName.indexOf("@"));
+        guiController.refreshGUI();
+        containerController.getAgent(agentName.substring(0, agentName.indexOf("@"))).kill();
+    }
     private void readData() throws IOException, StaleProxyException {
         CSVReader reader = new CSVReader();
         List<List<String>> data = reader.readFile("G:\\Uni Stuff\\Semester 6\\Intelligent System\\Assignment\\IA-Delivery-Vehicle-Routing-System\\DVRS App\\src\\main\\resources\\data\\test.txt");
