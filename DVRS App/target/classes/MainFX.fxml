@@ -118,13 +118,13 @@
          <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefWidth="375.0">
            <items>
                <Label text="Active Agent(s)" />
-               <ListView prefHeight="250.0" prefWidth="200.0" />
+               <ListView fx:id="agentsList" prefHeight="250.0" prefWidth="200.0" />
            </items>
          </SplitPane>
          <SplitPane dividerPositions="0.5" layoutX="10.0" layoutY="10.0" orientation="VERTICAL" prefWidth="375.0">
             <items>
                <Label text="Parcel(s)" />
-               <ListView prefHeight="250.0" prefWidth="200.0" />
+               <ListView fx:id="parcelsList" prefHeight="250.0" prefWidth="200.0" />
             </items>
          </SplitPane>
       </children>

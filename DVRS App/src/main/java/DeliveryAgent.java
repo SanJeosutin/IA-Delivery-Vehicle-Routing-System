@@ -3,6 +3,7 @@ import jade.core.behaviours.CyclicBehaviour;
 import jade.core.AID;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import javafx.scene.shape.Circle;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,10 +11,11 @@ import java.util.List;
 
 public class DeliveryAgent extends Agent {
     private int maxCapacity;
-
+    private List<Node> route = new ArrayList<Node>();
+    private Circle agentBody;
 
     protected void setup() {
-        System.out.println("Hello! Agent " + getAID().getName() + " is Ready");
+        System.out.println("Hello! " + getAID().getName() + " is Ready");
         addBehaviour(new CyclicBehaviour(this) {
             public void action() {
                 ACLMessage message = receive();
@@ -27,5 +29,9 @@ public class DeliveryAgent extends Agent {
                 }
             }
         });
+
+        Object[] args = getArguments();
+        agentBody = (Circle) args[0];
+        maxCapacity = (int) args[1];
     }
 }
