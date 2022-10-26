@@ -1,5 +1,6 @@
+import jade.tools.sniffer.AgentList;
+import jade.wrapper.ControllerException;
 import jade.wrapper.StaleProxyException;
-import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -7,19 +8,18 @@ import javafx.event.EventHandler;
 import javafx.event.EventTarget;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 
-import java.awt.*;
+import javax.swing.text.Highlighter;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -68,6 +68,18 @@ public class GUIController implements Initializable {
     @FXML
     public ObservableList<Object> agentsObjectList = FXCollections.observableArrayList();
 
+    @FXML
+    public ObservableList<Parcel> parcelObjectList = FXCollections.observableArrayList();
+
+    @FXML
+    public void programStartButton() throws StaleProxyException {
+        MainFXClass.playScenario();
+    }
+
+    private Map<Circle, Text> circleReference = new HashMap<>();
+    private Circle nodeSelect = null;
+    private Paint nodeSelectColour = null;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         agentCreateButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -84,25 +96,31 @@ public class GUIController implements Initializable {
         agentDeleteButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                System.out.println("Deleting Agent...");
+                try {
+                    removeAgentWindow();
+                } catch (ControllerException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
 
-        parcelCreateButton.setOnAction(new EventHandler<ActionEvent>() {
+        mapPane.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
-            public void handle(ActionEvent actionEvent) {
-                System.out.println("Creating Parcel...");
+            public void handle(MouseEvent mouseEvent) {
+                EventTarget target = mouseEvent.getTarget();
+
+                if (target != mapPane) {
+                    Circle newNodeTarget = (Circle) target;
+                    if (circleReference.containsKey(newNodeTarget)) {
+                        getClickedNode(newNodeTarget);
+                    }
+                } else {
+                    addNodeWindow(mouseEvent);
+                }
             }
         });
 
-        parcelDeleteButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                System.out.println("Deleting Parcel...");
-            }
-        });
-
-
+        parcelsList.setItems(parcelObjectList);
     }
 
     public void createAgentWindow() throws StaleProxyException {
@@ -140,6 +158,183 @@ public class GUIController implements Initializable {
         displayModal(Alert.AlertType.CONFIRMATION, "SUCCESS - Delivery Agent", "Successfully creating Delivery Agent with " + capacity + " max capacity.");
     }
 
+    public void removeAgentWindow() throws ControllerException {
+        int index = agentsList.getSelectionModel().getSelectedIndex();
+
+        if (index < 0 || index >= agentsObjectList.size()) {
+            displayModal(Alert.AlertType.WARNING, "WARNING - Delivery Agent Deletion", "Please select Agent First before removing them.");
+            return;
+        }
+
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.setTitle("Delivery Agent Deletion");
+        confirm.setHeaderText(null);
+        confirm.setContentText("Are you sure you want to remove DA" + index + "1?");
+
+        Optional<ButtonType> output = confirm.showAndWait();
+
+        if (output.isPresent() && output.get() == ButtonType.OK) {
+            MainFXClass.removeDeliveryAgent(index);
+            agentsObjectList.remove(index);
+            populateAgentslist();
+            displayModal(Alert.AlertType.INFORMATION, "INFO - Delivery Agent Deletion", "Successfully deleted agent DA" + index + "1.");
+        }
+    }
+
+    public void addNodeWindow(MouseEvent mouseEvent) {
+        double posX = mouseEvent.getX();
+        double posY = mouseEvent.getY();
+
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Create New Node");
+        dialog.setHeaderText("New Node");
+        dialog.setContentText("Node Name: ");
+
+        boolean complete = false;
+
+        while (!complete) {
+            Optional<String> result = dialog.showAndWait();
+
+            String nodeName = result.get();
+
+            if (nodeName.isBlank()) {
+                displayModal(Alert.AlertType.ERROR, "ERROR - Node Creation", "Please enter new node name.");
+            } else if (MainFXClass.nodeExist(nodeName)) {
+                displayModal(Alert.AlertType.ERROR, "ERROR - Node Creation", "Name already registered. Try a new one.");
+            } else {
+                MainFXClass.addNode(nodeName, new Position(posX, posY));
+                displayModal(Alert.AlertType.INFORMATION, "SUCCESS - Node Creation", "Successfully creating Node with name " + nodeName + ".");
+
+                complete = true;
+            }
+        }
+    }
+
+    public void removeNodeWindow() throws StaleProxyException {
+        if (nodeSelect == null) {
+            displayModal(Alert.AlertType.WARNING, "WARNING - Node Deletion", "Please select a node from the map.");
+            return;
+        }
+
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.setTitle("Node Deletion");
+        confirm.setContentText("Do you want to delete selected node?");
+
+        Optional<ButtonType> output = confirm.showAndWait();
+        if (output.isPresent() && output.get() == ButtonType.OK) {
+            //removing all parcel within the selected node
+
+            for (int i = 0; i < parcelObjectList.size(); ) {
+                Parcel parcel = parcelObjectList.get(i);
+
+                if (parcel.getDestination().equals(circleReference.get(nodeSelect))) {
+                    MainFXClass.removeParcel(parcel);
+                    parcelObjectList.remove(parcel);
+                } else {
+                    // go to the next one if parcel is not deleted
+                    i++;
+                }
+            }
+
+            Text removeText = circleReference.get(nodeSelect);
+            MainFXClass.removeNode(removeText.getText());
+            circleReference.remove(nodeSelect);
+
+            mapPane.getChildren().removeAll(nodeSelect, removeText);
+
+            nodeSelect = null;
+            nodeSelectColour = null;
+
+            displayModal(Alert.AlertType.INFORMATION, "SUCCESS - Node", "Successfully remove selected node.");
+        }
+    }
+
+    @FXML
+    public void addParcelWindow() throws StaleProxyException {
+        if (nodeSelect == null) {
+            displayModal(Alert.AlertType.WARNING, "WARNING - Parcel Creation", "Please select a destination node first");
+            return;
+        }
+        int weight = 0;
+
+        TextInputDialog dialog = new TextInputDialog();
+
+        // parcel name
+        dialog.setTitle("Parcel Creation");
+        dialog.setHeaderText("New Parcel");
+        dialog.setContentText("Parcel Name:");
+
+        String parcelName = "";
+        boolean hasName = false;
+
+        while (!hasName) {
+            Optional<String> response = dialog.showAndWait();
+            if (response.isPresent()) {
+                String newName = response.get();
+                if (newName.isBlank()) {
+                    displayModal(Alert.AlertType.ERROR, "ERROR - Parcel Creation", "Please enter parcel name");
+                } else {
+                    parcelName = newName;
+                    hasName = true;
+                }
+            } else {
+                return;
+            }
+        }
+
+        //parcel weight
+        dialog = new TextInputDialog();
+        dialog.setTitle("Parcel Creation");
+        dialog.setHeaderText("New Parcel");
+        dialog.setContentText("Parcel Weight:");
+
+        boolean hasWeight = false;
+
+        while (!hasWeight) {
+            Optional<String> response = dialog.showAndWait();
+            if (response.isPresent()) {
+                String newWeight = response.get();
+                if (newWeight.isBlank()) {
+                    displayModal(Alert.AlertType.ERROR, "ERROR - Parcel Creation", "Please enter a weight");
+                } else {
+                    try {
+                        weight = Integer.parseInt(newWeight);
+                        hasWeight = true;
+                    } catch (NumberFormatException e) {
+                        displayModal(Alert.AlertType.ERROR, "ERROR - Parcel Creation", "Please enter a number for weight");
+                    }
+                }
+            } else {
+                return;
+            }
+        }
+
+        Parcel parcel = new Parcel(weight, circleReference.get(nodeSelect).getText(), parcelName);
+        MainFXClass.addParcel(parcel);
+
+        displayModal(Alert.AlertType.INFORMATION, "SUCCESS - Parcel Creation", parcelName + " with weight of " + weight + ". Has been successfully created.");
+    }
+
+    @FXML
+    public void removeParcelWindow() throws StaleProxyException {
+        Parcel selectedParcel = (Parcel) parcelsList.getSelectionModel().getSelectedItem();
+        if (selectedParcel == null) {
+            displayModal(Alert.AlertType.WARNING, "WARNING - Parcel Deletion", "Please select a parcel first");
+            return;
+        }
+
+        Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmation.setTitle("Parcel Deletion");
+        confirmation.setContentText("Are you sure you want to delete this parcel?");
+
+        Optional<ButtonType> result = confirmation.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            MainFXClass.removeParcel(selectedParcel);
+
+            displayModal(Alert.AlertType.INFORMATION, "SUCCESS - Parcel Deletion", "Parcel with the name of " + selectedParcel.getName() + " has been removed.");
+        }
+    }
+
     public void populateAgentslist() {
         agentsList.setItems(FXCollections.observableArrayList(agentsObjectList));
     }
@@ -159,9 +354,47 @@ public class GUIController implements Initializable {
         circle.setPickOnBounds(false);
 
         Text text = new Text(id);
-        text.setX(circle.getCenterX() - text.getBoundsInLocal().getWidth() / 2);
-        text.setY(circle.getCenterY() - text.getBoundsInLocal().getHeight() / 2);
+        text.setMouseTransparent(true);
+        text.setX(circle.getCenterX() + text.getBoundsInLocal().getWidth() / 2);
+        text.setY(circle.getCenterY() + text.getBoundsInLocal().getHeight() / 2);
 
         mapPane.getChildren().add(circle);
+        mapPane.getChildren().add(text);
+
+        circleReference.put(circle, text);
     }
+
+    public void deregisterNode(String reference) {
+        for (Circle circle : circleReference.keySet()) {
+            if (circleReference.get(circle).getText().equals(reference)) {
+                mapPane.getChildren().remove(circle);
+            }
+        }
+    }
+
+    public void registerParcel(Parcel parcel) {
+        parcelObjectList.add(parcel);
+    }
+
+    public void deregisterParcel(Parcel parcel) {
+        parcelObjectList.remove(parcel);
+    }
+
+    public void getClickedNode(Circle circle) {
+        if (nodeSelect != null) {
+            nodeSelect.setFill(nodeSelectColour);
+            circleReference.get(nodeSelect).setFill(Color.BLACK);
+        }
+
+        nodeSelect = circle;
+        nodeSelectColour = circle.getFill();
+
+        nodeSelect.setFill(Color.GREEN);
+        circleReference.get(nodeSelect).setFill(Color.GREEN);
+    }
+
+    public void refreshGUI() {
+        agentsList.setItems(FXCollections.observableArrayList(agentsObjectList));
+    }
+
 }

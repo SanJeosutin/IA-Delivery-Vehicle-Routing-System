@@ -1,6 +1,5 @@
 import jade.core.AID;
 import jade.core.Agent;
-import jade.domain.AMSEventQueueFeeder;
 import jade.domain.AMSService;
 import jade.domain.FIPAAgentManagement.AMSAgentDescription;
 import jade.domain.FIPAAgentManagement.SearchConstraints;
@@ -13,14 +12,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MasterRoutingAgent extends Agent implements MRAInterface {
-    private List<Node> nodes = new ArrayList<Node>();
-    private List<Parcel> parcels = new ArrayList<Parcel>();
+    private List<Node> nodes = new ArrayList<>();
+    private List<Parcel> parcels = new ArrayList<>();
+    private List<Integer> agentCapacity = new ArrayList<>();
+
     private Position position = new Position(0, 0);
-    private List<List<Double>> distanceMatrix = new ArrayList<List<Double>>();
+    private List<List<Double>> distanceMatrix = new ArrayList<>();
 
 
     protected void setup() {
+        //initialised O2AInterface before calling in MRAInterface
+        registerO2AInterface(MRAInterface.class, this);
+
         System.out.println("Hello! Agent " + getAID().getName() + " is Ready");
+
         //First set-up message receiving behaviour
         CyclicBehaviour messageListeningBehaviour = new CyclicBehaviour(this) {
             @Override
@@ -53,11 +58,11 @@ public class MasterRoutingAgent extends Agent implements MRAInterface {
 
     @Override
     public void startRoute(List<String> DAs) {
-        
+        //should called in the routing class when implemented
     }
 
     @Override
-    public void newNode(Node n) {
+    public synchronized void newNode(Node n) {
         // simple check when node is already on the 'list'
         if (nodes.contains(n)) {
             return;
@@ -73,12 +78,14 @@ public class MasterRoutingAgent extends Agent implements MRAInterface {
             nodeDistances.add(distance);
             distanceMatrix.get(i).add(distance);
         }
+        //add it to itself in matrix
+        nodeDistances.add((double) 0);
         distanceMatrix.add(nodeDistances);
         nodes.add(n);
     }
 
     @Override
-    public void removeNode(Node n) {
+    public  void removeNode(Node n) {
         int pos = nodes.indexOf(n);
 
         if (pos >= 0) {
@@ -115,56 +122,4 @@ public class MasterRoutingAgent extends Agent implements MRAInterface {
     public void removeParcel(Parcel p) {
         parcels.remove(p);
     }
-
-    private List<AID> getDeliveryAgents() {
-        AMSAgentDescription[] agents;
-        List<AID> deliveryAgents = new ArrayList<>();
-
-        try {
-            SearchConstraints searchConst = new SearchConstraints();
-            final var i = -1;
-            searchConst.setMaxResults(new Long(-1));
-            agents = AMSService.search(this, new AMSAgentDescription(), searchConst);
-        } catch (FIPAException e) {
-            System.out.println("There's a problem while searching AMS. Error: " + e);
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
-
-        for (AMSAgentDescription agent : agents) {
-            AID agentID = agent.getName();
-
-            if (agentID.getName().matches("^d\\d+@.*$")) {
-                deliveryAgents.add(agentID);
-            }
-        }
-        return deliveryAgents;
-    }
-
-    {
-        CyclicBehaviour msgListenBehaviour = new CyclicBehaviour(this) {
-            public void action() {
-                ACLMessage message = receive();
-                if (message != null) {
-                    System.out.println(getLocalName() + ": Received response " + message.getContent() + " from " + message.getSender().getLocalName());
-                }
-                block();
-            }
-        };
-        addBehaviour(msgListenBehaviour);
-
-        ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
-        msg.setContent("Contacting agents...");
-        for (int i = 1; i <= 3; i++) {
-            msg.addReceiver(new AID("d" + i, AID.ISLOCALNAME));
-        }
-
-        System.out.println(getLocalName() + ": Sending message " + msg.getContent() + " to ");
-        Iterator receivers = msg.getAllIntendedReceiver();
-        while (receivers.hasNext()) {
-            System.out.println(((AID) receivers.next()).getLocalName());
-        }
-        send(msg);
-    }
-
 }
