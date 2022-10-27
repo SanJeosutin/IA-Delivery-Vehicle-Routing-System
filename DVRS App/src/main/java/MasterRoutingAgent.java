@@ -100,20 +100,6 @@ public class MasterRoutingAgent extends Agent implements MRAInterface {
     @Override
     public void addParcel(Parcel p) {
         parcels.add(p);
-        //Send messages to two agents (hard-coded)
-        ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
-        msg.setContent("Ping");
-        for (int i = 1; i <= 2; i++) {
-            msg.addReceiver(new AID("DA" + i, AID.ISLOCALNAME));
-        }
-
-        //Send message (only once)
-        System.out.println(getLocalName() + ": Sending message " + msg.getContent() + " to ");
-        Iterator receivers = msg.getAllIntendedReceiver();
-        while (receivers.hasNext()) {
-            System.out.println(((AID) receivers.next()).getLocalName());
-        }
-        send(msg);
     }
 
     @Override

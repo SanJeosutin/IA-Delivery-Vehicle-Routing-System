@@ -1,16 +1,47 @@
-AGENT,6,25,20,20,15,25,15
-NODE,155,75,N1
-NODE,555,156,N2
-NODE,175,145,N3
-NODE,125,155,N4
-NODE,340,150,N5
-PARCEL,3,N1,PARCEL1
-PARCEL,6,N3,PARCEL2
-PARCEL,10,N1,PARCEL3
-PARCEL,15,N2,PARCEL4
-PARCEL,4,N4,PARCEL5
-PARCEL,2,N3,PARCEL6
-PARCEL,9,N2,PARCEL7
-PARCEL,12,N2,PARCEL8
-PARCEL,5,N4,PARCEL9
-PARCEL,7,N1,PARCEL10
+AGENT,9,35,44,43,32,41,38,45,33,27
+NODE,494,293,Heathmont
+NODE,368,31,Burnside
+NODE,586,192,Croydon Hills
+NODE,325,275,Diamond Creek
+NODE,134,339,Kooyong
+NODE,544,78,Burwood
+NODE,598,218,Kealba
+NODE,307,146,Burnley
+NODE,388,79,Westmeadows
+NODE,425,372,Croydon North
+NODE,242,290,Cranbourne South
+NODE,518,382,Brookfield
+NODE,88,387,Burwood East
+NODE,93,195,Hampton Park
+NODE,193,327,McKinnon
+PARCEL,10,Kooyong,Kooyong's Parcel
+PARCEL,17,Kooyong,Kooyong's Parcel
+PARCEL,16,Heathmont,Heathmont's Parcel
+PARCEL,11,Kealba,Kealba's Parcel
+PARCEL,11,Cranbourne South,Cranbourne's Parcel
+PARCEL,15,Diamond Creek,Diamond's Parcel
+PARCEL,9,Burnley,Burnley's Parcel
+PARCEL,15,Brookfield,Brookfield's Parcel
+PARCEL,21,Brookfield,Brookfield's ParcelPARCEL,20,Croydon North,Croydon's Parcel
+PARCEL,20,Burnley,Burnley's Parcel
+PARCEL,22,Kealba,Kealba's Parcel
+PARCEL,21,Burwood East,Burwood's Parcel
+PARCEL,9,Hampton Park,Hampton's Parcel
+PARCEL,17,Croydon North,Croydon's Parcel
+PARCEL,20,Croydon North,Croydon's Parcel
+PARCEL,13,Burwood,Burwood's Parcel
+PARCEL,10,Burwood,Burwood's Parcel
+PARCEL,21,Brookfield,Brookfield's Parcel
+PARCEL,24,Croydon Hills,Croydon's Parcel
+PARCEL,20,Diamond Creek,Diamond's Parcel
+PARCEL,24,Cranbourne South,Cranbourne's Parcel
+PARCEL,8,Kooyong,Kooyong's Parcel
+PARCEL,15,McKinnon,McKinnon's Parcel
+PARCEL,23,Burnside,Burnside's Parcel
+PARCEL,24,Burwood,Burwood's Parcel
+PARCEL,5,Hampton Park,Hampton's Parcel
+PARCEL,10,Burwood East,Burwood's Parcel
+PARCEL,10,Brookfield,Brookfield's Parcel
+PARCEL,24,Burnley,Burnley's Parcel
+PARCEL,9,Burwood East,Burwood's Parcel
+PARCEL,24,Diamond Creek,Diamond's Parcel

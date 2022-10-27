@@ -1,45 +1,47 @@
-AGENT,6,34,30,46,30,26,31
-NODE,96,129,Chelsea Heights
-NODE,568,318,Ivanhoe
-NODE,124,173,Sunbury
-NODE,343,72,Taylors Lakes
-NODE,39,239,Clarinda
-NODE,208,248,Glen Huntly
-NODE,325,145,Burnley
-NODE,81,67,Kalorama
-NODE,174,356,Bonbeach
-NODE,102,242,Doncaster
-NODE,568,165,Olinda
-NODE,561,71,St Kilda
-NODE,547,184,Waterways
-NODE,124,62,Travancore
-PARCEL,6,Travancore,Travancore's Parcel
-PARCEL,6,Doncaster,Doncaster's Parcel
-PARCEL,22,Kalorama,Kalorama's Parcel
-PARCEL,20,Doncaster,Doncaster's Parcel
-PARCEL,17,Clarinda,Clarinda's Parcel
-PARCEL,15,Olinda,Olinda's ParcelPARCEL,19,Travancore,Travancore's Parcel
-PARCEL,16,Bonbeach,Bonbeach's Parcel
-PARCEL,6,Sunbury,Sunbury's Parcel
-PARCEL,6,Ivanhoe,Ivanhoe's Parcel
-PARCEL,7,Travancore,Travancore's Parcel
-PARCEL,13,Bonbeach,Bonbeach's Parcel
-PARCEL,22,Ivanhoe,Ivanhoe's Parcel
-PARCEL,10,Glen Huntly,Glen's Parcel
-PARCEL,11,Ivanhoe,Ivanhoe's Parcel
-PARCEL,24,St Kilda,St's Parcel
-PARCEL,11,Burnley,Burnley's Parcel
-PARCEL,7,Clarinda,Clarinda's Parcel
-PARCEL,24,Sunbury,Sunbury's Parcel
-PARCEL,7,Sunbury,Sunbury's Parcel
-PARCEL,7,Kalorama,Kalorama's Parcel
-PARCEL,7,Doncaster,Doncaster's Parcel
-PARCEL,25,Burnley,Burnley's Parcel
-PARCEL,9,Travancore,Travancore's Parcel
-PARCEL,11,Ivanhoe,Ivanhoe's Parcel
-PARCEL,11,Kalorama,Kalorama's Parcel
-PARCEL,21,Kalorama,Kalorama's Parcel
-PARCEL,15,St Kilda,St's Parcel
-PARCEL,8,Taylors Lakes,Taylors's Parcel
-PARCEL,15,Glen Huntly,Glen's Parcel
-PARCEL,5,Burnley,Burnley's Parcel
+AGENT,9,35,44,43,32,41,38,45,33,27
+NODE,494,293,Heathmont
+NODE,368,31,Burnside
+NODE,586,192,Croydon Hills
+NODE,325,275,Diamond Creek
+NODE,134,339,Kooyong
+NODE,544,78,Burwood
+NODE,598,218,Kealba
+NODE,307,146,Burnley
+NODE,388,79,Westmeadows
+NODE,425,372,Croydon North
+NODE,242,290,Cranbourne South
+NODE,518,382,Brookfield
+NODE,88,387,Burwood East
+NODE,93,195,Hampton Park
+NODE,193,327,McKinnon
+PARCEL,10,Kooyong,Kooyong's Parcel
+PARCEL,17,Kooyong,Kooyong's Parcel
+PARCEL,16,Heathmont,Heathmont's Parcel
+PARCEL,11,Kealba,Kealba's Parcel
+PARCEL,11,Cranbourne South,Cranbourne's Parcel
+PARCEL,15,Diamond Creek,Diamond's Parcel
+PARCEL,9,Burnley,Burnley's Parcel
+PARCEL,15,Brookfield,Brookfield's Parcel
+PARCEL,21,Brookfield,Brookfield's ParcelPARCEL,20,Croydon North,Croydon's Parcel
+PARCEL,20,Burnley,Burnley's Parcel
+PARCEL,22,Kealba,Kealba's Parcel
+PARCEL,21,Burwood East,Burwood's Parcel
+PARCEL,9,Hampton Park,Hampton's Parcel
+PARCEL,17,Croydon North,Croydon's Parcel
+PARCEL,20,Croydon North,Croydon's Parcel
+PARCEL,13,Burwood,Burwood's Parcel
+PARCEL,10,Burwood,Burwood's Parcel
+PARCEL,21,Brookfield,Brookfield's Parcel
+PARCEL,24,Croydon Hills,Croydon's Parcel
+PARCEL,20,Diamond Creek,Diamond's Parcel
+PARCEL,24,Cranbourne South,Cranbourne's Parcel
+PARCEL,8,Kooyong,Kooyong's Parcel
+PARCEL,15,McKinnon,McKinnon's Parcel
+PARCEL,23,Burnside,Burnside's Parcel
+PARCEL,24,Burwood,Burwood's Parcel
+PARCEL,5,Hampton Park,Hampton's Parcel
+PARCEL,10,Burwood East,Burwood's Parcel
+PARCEL,10,Brookfield,Brookfield's Parcel
+PARCEL,24,Burnley,Burnley's Parcel
+PARCEL,9,Burwood East,Burwood's Parcel
+PARCEL,24,Diamond Creek,Diamond's Parcel

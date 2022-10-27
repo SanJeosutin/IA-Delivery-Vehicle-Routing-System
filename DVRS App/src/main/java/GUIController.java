@@ -73,7 +73,9 @@ public class GUIController implements Initializable {
 
     @FXML
     public void programStartButton() throws StaleProxyException {
-        MainFXClass.playScenario();
+        System.out.println("HEIGHT: " + mapPane.getHeight());
+        System.out.println("WIDTH: " + mapPane.getWidth());
+        //MainFXClass.playScenario();
     }
 
     private Map<Circle, Text> circleReference = new HashMap<>();
@@ -355,8 +357,8 @@ public class GUIController implements Initializable {
 
         Text text = new Text(id);
         text.setMouseTransparent(true);
-        text.setX(circle.getCenterX() + text.getBoundsInLocal().getWidth() / 2);
-        text.setY(circle.getCenterY() + text.getBoundsInLocal().getHeight() / 2);
+        text.setX(circle.getCenterX() - text.getBoundsInLocal().getWidth() / 2);
+        text.setY(circle.getCenterY() - text.getBoundsInLocal().getHeight() / 2);
 
         mapPane.getChildren().add(circle);
         mapPane.getChildren().add(text);
