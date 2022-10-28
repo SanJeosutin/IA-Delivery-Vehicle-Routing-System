@@ -1,47 +1,41 @@
-AGENT,9,35,44,43,32,41,38,45,33,27
-NODE,494,293,Heathmont
-NODE,368,31,Burnside
-NODE,586,192,Croydon Hills
-NODE,325,275,Diamond Creek
-NODE,134,339,Kooyong
-NODE,544,78,Burwood
-NODE,598,218,Kealba
-NODE,307,146,Burnley
-NODE,388,79,Westmeadows
-NODE,425,372,Croydon North
-NODE,242,290,Cranbourne South
-NODE,518,382,Brookfield
-NODE,88,387,Burwood East
-NODE,93,195,Hampton Park
-NODE,193,327,McKinnon
-PARCEL,10,Kooyong,Kooyong's Parcel
-PARCEL,17,Kooyong,Kooyong's Parcel
-PARCEL,16,Heathmont,Heathmont's Parcel
-PARCEL,11,Kealba,Kealba's Parcel
-PARCEL,11,Cranbourne South,Cranbourne's Parcel
-PARCEL,15,Diamond Creek,Diamond's Parcel
-PARCEL,9,Burnley,Burnley's Parcel
-PARCEL,15,Brookfield,Brookfield's Parcel
-PARCEL,21,Brookfield,Brookfield's ParcelPARCEL,20,Croydon North,Croydon's Parcel
-PARCEL,20,Burnley,Burnley's Parcel
-PARCEL,22,Kealba,Kealba's Parcel
-PARCEL,21,Burwood East,Burwood's Parcel
-PARCEL,9,Hampton Park,Hampton's Parcel
-PARCEL,17,Croydon North,Croydon's Parcel
-PARCEL,20,Croydon North,Croydon's Parcel
-PARCEL,13,Burwood,Burwood's Parcel
-PARCEL,10,Burwood,Burwood's Parcel
-PARCEL,21,Brookfield,Brookfield's Parcel
-PARCEL,24,Croydon Hills,Croydon's Parcel
-PARCEL,20,Diamond Creek,Diamond's Parcel
-PARCEL,24,Cranbourne South,Cranbourne's Parcel
-PARCEL,8,Kooyong,Kooyong's Parcel
-PARCEL,15,McKinnon,McKinnon's Parcel
-PARCEL,23,Burnside,Burnside's Parcel
-PARCEL,24,Burwood,Burwood's Parcel
-PARCEL,5,Hampton Park,Hampton's Parcel
-PARCEL,10,Burwood East,Burwood's Parcel
-PARCEL,10,Brookfield,Brookfield's Parcel
-PARCEL,24,Burnley,Burnley's Parcel
-PARCEL,9,Burwood East,Burwood's Parcel
-PARCEL,24,Diamond Creek,Diamond's Parcel
+S,8,37,34,50,48,33,41,38,41
+N,601,70,Sunbury
+N,531,66,Kilsyth
+N,379,170,Melton (suburb)
+N,598,308,Fawkner
+N,516,137,Craigieburn
+N,228,252,Alphington
+N,113,326,Caulfield East
+N,504,278,Bangholme
+N,156,299,Travancore
+N,537,338,Bulleen
+N,555,52,Waverley Park
+N,227,356,Kingsbury
+P,6,Melton (suburb),Melton's Parcel
+P,8,Sunbury,Sunbury's Parcel
+P,9,Craigieburn,Craigieburn's Parcel
+P,7,Kilsyth,Kilsyth's Parcel
+P,10,Bulleen,Bulleen's Parcel
+P,7,Kilsyth,Kilsyth's Parcel
+P,9,Caulfield East,Caulfield's Parcel
+P,6,Bulleen,Bulleen's ParcelP,5,Kingsbury,Kingsbury's Parcel
+P,9,Fawkner,Fawkner's Parcel
+P,7,Melton (suburb),Melton's Parcel
+P,10,Travancore,Travancore's Parcel
+P,10,Waverley Park,Waverley's Parcel
+P,6,Waverley Park,Waverley's Parcel
+P,5,Kilsyth,Kilsyth's Parcel
+P,9,Kilsyth,Kilsyth's Parcel
+P,10,Bangholme,Bangholme's Parcel
+P,9,Melton (suburb),Melton's Parcel
+P,7,Bulleen,Bulleen's Parcel
+P,9,Caulfield East,Caulfield's Parcel
+P,6,Melton (suburb),Melton's Parcel
+P,7,Kingsbury,Kingsbury's Parcel
+P,6,Caulfield East,Caulfield's Parcel
+P,5,Travancore,Travancore's Parcel
+P,7,Sunbury,Sunbury's Parcel
+P,6,Caulfield East,Caulfield's Parcel
+P,8,Kingsbury,Kingsbury's Parcel
+P,6,Kingsbury,Kingsbury's Parcel
+P,8,Sunbury,Sunbury's Parcel
