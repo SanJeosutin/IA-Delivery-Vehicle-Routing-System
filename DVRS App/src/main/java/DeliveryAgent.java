@@ -21,9 +21,10 @@ public class DeliveryAgent extends Agent {
         addBehaviour(new CyclicBehaviour(this) {
             public void action() {
                 ACLMessage aclMessage = receive();
+                // check whether there is a message. When there is, check if the message is for route delivery
                 if (aclMessage != null) {
-
                     if (aclMessage.getOntology().equals(MasterRoutingAgent.ONTOLOGY_DELIVERY_ROUTE)) {
+                        // when the agent is not moving, get a route coordinate from MRA
                         if (!outDelivering) {
                             System.out.println("Got delivery route!");
                             try {
@@ -36,6 +37,7 @@ public class DeliveryAgent extends Agent {
                                 throw new RuntimeException(e);
                             }
                         }
+                        // otherwise request MRA for parcels
                     } else if (aclMessage.getOntology().equals(MasterRoutingAgent.ONTOLOGY_CAPACITY_REQUEST)){
                         ACLMessage response = new ACLMessage(ACLMessage.INFORM);
                         response.setOntology(MasterRoutingAgent.ONTOLOGY_CAPACITY_RESPONSE);
@@ -49,7 +51,7 @@ public class DeliveryAgent extends Agent {
                 }
             }
         });
-
+        //draw the agent on screen, and set the agent capacity when initialised.
         Object[] args = getArguments();
         agentBody = (Circle) args[0];
         maxCapacity = (int) args[1];

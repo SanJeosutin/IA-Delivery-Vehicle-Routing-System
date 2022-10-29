@@ -89,7 +89,7 @@ public class MainFX extends Application {
         Runtime runtime = Runtime.instance();
         Profile profile = new ProfileImpl(null, 8888, null);
         containerController = runtime.createMainContainer(profile);
-
+        //Initialise Master Routing Agent
         agentController = containerController.createNewAgent("MRA", MasterRoutingAgent.class.getName(), new Object[0]);
         agentController.start();
 
@@ -101,10 +101,10 @@ public class MainFX extends Application {
     public void addDeliveryAgent(int capacity) throws StaleProxyException {
         Circle drawAgent = new Circle(initPosX, initPosY, 6, agentColors[colorPos]);
         colorPos++;
-
+        //Display text on screen for each agent created
         String drawAgentRef = "DA" + guiController.agentsObjectList.size() + 1;
         guiController.registerNode(drawAgent, drawAgentRef);
-
+        //initialise DA
         AgentController newDeliveryAgent = containerController.createNewAgent(drawAgentRef, DeliveryAgent.class.getName(), new Object[]{drawAgent, capacity});
         newDeliveryAgent.start();
         guiController.agentsObjectList.add(newDeliveryAgent.getName());
