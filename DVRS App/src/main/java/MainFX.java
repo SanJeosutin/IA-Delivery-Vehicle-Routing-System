@@ -158,7 +158,7 @@ public class MainFX extends Application {
     }
     private void readData() throws IOException, StaleProxyException {
         CSVReader reader = new CSVReader();
-        List<List<String>> data = reader.readFile("G:\\Uni Stuff\\Semester 6\\Intelligent System\\Assignment\\IA-Delivery-Vehicle-Routing-System\\DVRS App\\src\\main\\resources\\data\\test.txt");
+        List<List<String>> data = reader.readFile( "src/main/resources/data/test.txt");
 
         for (List<String> eachData : data) {
             String type = eachData.get(0);
