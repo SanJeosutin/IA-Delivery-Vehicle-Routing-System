@@ -73,9 +73,8 @@ public class GUIController implements Initializable {
 
     @FXML
     public void programStartButton() throws StaleProxyException {
-        System.out.println("HEIGHT: " + mapPane.getHeight());
-        System.out.println("WIDTH: " + mapPane.getWidth());
-        //MainFXClass.playScenario();
+        System.out.println("Starting Program");
+        MainFXClass.playScenario();
     }
 
     private Map<Circle, Text> circleReference = new HashMap<>();

@@ -7,6 +7,7 @@ import jade.domain.FIPAException;
 import jade.lang.acl.ACLMessage;
 import jade.core.behaviours.CyclicBehaviour;
 
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.ArrayList;
 import java.util.List;
@@ -126,7 +127,7 @@ public class MasterRoutingAgent extends Agent implements MRAInterface {
         }
     }
 
-    private void sendRoutes(List<String> DAs) throws InterruptedException {
+    private void sendRoutes(List<String> DAs) throws InterruptedException, IOException {
         List<List<Integer>> newRoute;
         getCapacity(DAs);
 
@@ -141,11 +142,33 @@ public class MasterRoutingAgent extends Agent implements MRAInterface {
 
             if (destination.isPresent()) {
                 int index = nodes.indexOf(destination.get());
-                demands.set(index,1);
-                parcelsWeight.set(index,(parcelsWeight.get(index) + parcel.getWeight()));
+                demands.set(index, 1);
+                parcelsWeight.set(index, (parcelsWeight.get(index) + parcel.getWeight()));
             }
-
         }
 
+        DataModel agentData = new DataModel(distanceMatrix, DAs.size(), demands, agentCapacity, 0, parcelsWeight);
+
+        newRoute = RoutingLogic.routing(agentData);
+
+        for (int i = 0; i < DAs.size(); i++) {
+            if (newRoute.get(i).size() > 1) {
+                List<Node> testRoute = new ArrayList<>();
+                String agentName = DAs.get(i);
+
+                for(int nodePos : newRoute.get(i)){
+                    testRoute.add(nodes.get(nodePos));
+                }
+
+                Message msg = new Message();
+                msg.setRoute(testRoute);
+
+                ACLMessage aclMessage = new ACLMessage(ACLMessage.INFORM);
+                aclMessage.setOntology(ONTOLOGY_DELIVERY_ROUTE);
+                aclMessage.setContentObject(msg);
+                aclMessage.addReceiver(new AID(agentName, AID.ISLOCALNAME));
+                send(aclMessage);
+            }
+        }
     }
 }
